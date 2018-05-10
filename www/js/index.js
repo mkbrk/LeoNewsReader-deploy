@@ -13,9 +13,12 @@ window.app = {
                 for (var i = 0; i < res.length; i++) {
                     app.categories[res[i].CategoryID] = res[i];
                 };
+
+                app.runQuery();
+
             }, "json");
 
-            app.runQuery();
+            
         }, false);
     },
 
@@ -47,9 +50,40 @@ window.app = {
         var url = app.ROOT + "en/news/find";
         $.get(url, {query:query, category:category}, function(res) {
             app.currentResults = res;
+
+            //some preprocessing
+            for (var i = 0; i < res.Facets.Categories.length; i++) {
+                var c = res.Facets.Categories[i];
+                var catID = c.Value.split('|')[0];
+                res.Facets.Categories[i].CategoryID = app.categories[catID].CategoryID;
+                res.Facets.Categories[i].CategoryName = app.categories[catID].CategoryName;
+                res.Facets.Categories[i].IconSvg = app.categories[catID].IconSvg;
+            };
+
             $("#results").html(app.applyTemplate("result_template", res.Results));
+
+            //add the category thumbnails
+            var cats = $("#categories");
+            cats.html("");
+            var html = "<a href='javascript:app.showCategoryDetails();'>";
+
+            for (var i = 0; i < res.Facets.Categories.length; i++) {
+                var c = res.Facets.Categories[i];
+                html += c.IconSvg;
+            };
+
+            html += "</a>";
+            cats.html(html);
+
             app.working(false);
         }, "json");
+    },
+
+    showCategoryDetails : function() {
+        if(app.currentResults != null)
+        {
+            $("#categories").html(app.applyTemplate("category_template", app.currentResults.Facets.Categories));
+        }
     },
 
     loadNearby : function (obsID, lat, lng, km) {
@@ -167,6 +201,7 @@ window.app = {
             }
         }
         app._SHOWINGMAP = !app._SHOWINGMAP;
+        $("#mapButton").html(app._SHOWINGMAP ? "List" : "Map");
     },
 
     loadSimilar : function (obsID) {

@@ -41,6 +41,35 @@ body {
     margin-bottom:10px;
 }
 
+#categories svg
+{
+    max-width: 30px;
+    max-height: 30px;
+}
+
+#categories
+{
+    display: block;
+    margin-bottom:10px;
+    white-space: nowrap;
+    overflow:hidden;
+}
+
+.badge
+{
+    color:white;
+    background-color: gray;
+    padding: 4px;
+    border-radius: 8px;
+    font-size: 70%;
+}
+
+#categories a
+{
+    text-decoration: none;
+    color:black;
+}
+
 .result-title
 {
     font-size:130%;

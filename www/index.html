@@ -39,7 +39,7 @@
                         <input style="font-size:20px;padding:4px;max-width:200px;" type="search" onsearch="app.runQuery(this.value);" placeholder="search" />
                         
                     </td>
-                    <td><a href="javascript:app.toggleMap();" class="btn">Map</a></td>
+                    <td><a href="javascript:app.toggleMap();" id="mapButton" class="btn">Map</a></td>
 
                 </tr>
             </table>
@@ -49,6 +49,8 @@
             <img src="img/ajax-loader.gif"/>
         </div>
 
+
+        <div id="categories"></div>
 
         <div id="results">
 
@@ -66,7 +68,7 @@
     </script>
 
     <script id="category_template" type="x-tmpl-mustache">
-        <div><a href="javascript:app.setCategory('{{CategoryID}}')">{{CategoryName}}</a></div>
+        <div><a href="javascript:app.setCategory('{{CategoryID}}')">{{{IconSvg}}} {{CategoryName}} <span class="badge">{{Count}}</span></a></div>
     </script>
 
     <script id="result_template" type="x-tmpl-mustache">
