@@ -1,0 +1,54 @@
+{
+  "_from": "cordova-plugin-mapbox@^1.2.3",
+  "_id": "cordova-plugin-mapbox@1.2.3",
+  "_inBundle": false,
+  "_integrity": "sha1-bqCcjERVaTJJCwi32RkyQ6M8FW4=",
+  "_location": "/cordova-plugin-mapbox",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "range",
+    "registry": true,
+    "raw": "cordova-plugin-mapbox@^1.2.3",
+    "name": "cordova-plugin-mapbox",
+    "escapedName": "cordova-plugin-mapbox",
+    "rawSpec": "^1.2.3",
+    "saveSpec": null,
+    "fetchSpec": "^1.2.3"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/cordova-plugin-mapbox/-/cordova-plugin-mapbox-1.2.3.tgz",
+  "_shasum": "6ea09c8c44556932490b08b7d9193243a33c156e",
+  "_spec": "cordova-plugin-mapbox@^1.2.3",
+  "_where": "/Users/mike/repos/leo/reader/LeoNewsReader",
+  "bundleDependencies": false,
+  "cordova_name": "Mapbox",
+  "deprecated": false,
+  "description": "Need native maps? Look no further!",
+  "engines": [
+    {
+      "name": "cordova",
+      "version": ">=3.5.0"
+    }
+  ],
+  "issue": "https://github.com/Telerik-Verified-Plugins/Mapbox/issues",
+  "keywords": [
+    "Mapbox",
+    "Maps",
+    "Mapping",
+    "Native maps",
+    "ecosystem:cordova",
+    "cordova-android",
+    "cordova-ios"
+  ],
+  "license": "MIT",
+  "name": "cordova-plugin-mapbox",
+  "platforms": [
+    "android",
+    "ios"
+  ],
+  "repo": "https://github.com/Telerik-Verified-Plugins/Mapbox.git",
+  "version": "1.2.3"
+}
