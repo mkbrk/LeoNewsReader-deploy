@@ -35,10 +35,17 @@ body {
 .result-block
 {
     background-color: white;
-    padding: 10px;
     border-radius: 6px;
     box-shadow:2px 2px 6px #ddd;
     margin-bottom:10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.result-block .result-table
+{
+    width:95%;
+    margin:20px;
 }
 
 #categories svg
