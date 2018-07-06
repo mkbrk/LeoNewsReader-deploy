@@ -34,7 +34,7 @@
                 <tr>
                     <td valign="middle" style="text-align:center;font-size:20px;">
                         <div>
-                            <a href="javascript:app.runQuery();" style="display:flex;align-items:center;white-space:nowrap;text-decoration:none;color:black;">
+                            <a onclick="app.runQuery();" style="display:flex;align-items:center;white-space:nowrap;text-decoration:none;color:black;">
                                 <img src="img/logo.png" style="max-width:50px;"/> News
                             </a>
                         <div>
@@ -43,7 +43,7 @@
                         <input style="font-size:20px;padding:4px;max-width:200px;" type="search" onsearch="app.runQuery(this.value);" placeholder="search" />
                         
                     </td>
-                    <td><a href="javascript:app.toggleMap();" id="mapButton" class="btn">Map</a></td>
+                    <td><a onclick="app.toggleMap();" id="mapButton" class="btn">Map</a></td>
 
                 </tr>
             </table>
@@ -72,7 +72,7 @@
     </script>
 
     <script id="category_template" type="x-tmpl-mustache">
-        <div><a href="javascript:app.setCategory('{{CategoryID}}')">{{{IconSvg}}} {{CategoryName}} <span class="badge">{{Count}}</span></a></div>
+        <div><a onclick="app.setCategory('{{CategoryID}}')">{{{IconSvg}}} {{CategoryName}} <span class="badge">{{Count}}</span></a></div>
     </script>
 
     <script id="result_template" type="x-tmpl-mustache">
@@ -88,7 +88,7 @@
                             </div>
                         {{/Document.SourceName}}
 
-                        <div><a class="result-title" href="javascript:app.show('{{Document.ObservationID}}');">{{{Document.ObservationTitle}}}</a></div>
+                        <div><a class="result-title" onclick="app.show('{{Document.ObservationID}}');">{{{Document.ObservationTitle}}}</a></div>
                         <div style="font-size:80%;color:Gray;">{{Document.LocationDescription}}</div>
                         
 
@@ -112,13 +112,13 @@
                     <td colspan="2" style="">
                         <div class="nomap" style="text-align:right;">
                             {{#Document.Location}}
-                            <!--<a class="btn btn-link" href="javascript:window.app.showOnMap('{{Document.ObservationID}}',{{Document.Location.Latitude}},{{Document.Location.Longitude}})"><i class="glyphicon glyphicon-map-marker"></i> Map</a>-->
-                            <a class="btn btn-link" href="javascript:window.app.loadNearby('{{Document.ObservationID}}',{{Document.Location.Latitude}},{{Document.Location.Longitude}},100)"><i class="glyphicon glyphicon-screenshot"></i> Nearby</a>
+                            <!--<a class="btn btn-link" onclick="window.app.showOnMap('{{Document.ObservationID}}',{{Document.Location.Latitude}},{{Document.Location.Longitude}})"><i class="glyphicon glyphicon-map-marker"></i> Map</a>-->
+                            <a class="btn btn-link" onclick="window.app.loadNearby('{{Document.ObservationID}}',{{Document.Location.Latitude}},{{Document.Location.Longitude}},100)"><i class="glyphicon glyphicon-screenshot"></i> Nearby</button>
                             {{/Document.Location}}
 
-                            <a class="btn btn-link" href="javascript:window.app.loadSimilar('{{Document.ObservationID}}');"><i class="glyphicon glyphicon-bookmark"></i> Related</a>
+                            <a class="btn btn-link" onclick="window.app.loadSimilar('{{Document.ObservationID}}');"><i class="glyphicon glyphicon-bookmark"></i> Related</a>
 
-                            <a class="btn btn-link" href="javascript:window.app.share('{{Document.ObservationID}}');"><i class="glyphicon glyphicon-bookmark"></i> SHare</a>
+                            <a class="btn btn-link" onclick="window.app.share('{{Document.ObservationID}}');"><i class="glyphicon glyphicon-bookmark"></i> Share</a>
                         </div>
 
                         <div id="more-{{Document.ObservationID}}"></div>
@@ -152,7 +152,7 @@
                         </div>
                     {{/SourceName}}
 
-                    <div><a class="result-title" href="javascript:app.show('{{ObservationID}}')">{{{ObservationTitle}}}</a></div>
+                    <div><a class="result-title" onclick="app.show('{{ObservationID}}')">{{{ObservationTitle}}}</a></div>
                     <div style="font-size:80%;color:Gray;">{{LocationDescription}}</div>
                     
 
@@ -167,7 +167,7 @@
                     </div>
 
                     <div style="text-align:right;">
-                            <a class="btn btn-link" href="javascript:window.app.share('{{ObservationID}}');"><i class="glyphicon glyphicon-bookmark"></i> SHare</a>
+                            <a class="btn btn-link" onclick="window.app.share('{{ObservationID}}');"><i class="glyphicon glyphicon-bookmark"></i> SHare</a>
                     </div>
 
                 </td>
