@@ -24,8 +24,9 @@ window.app = {
 
     show : function(obsid)
     {
-        window.open('https://news.leonetwork.org/en/news/show/' + obsid, "_blank");
-        return;
+        cordova.InAppBrowser.open('https://news.leonetwork.org/en/news/show/' + obsid, '_blank', 'location=yes');
+        //window.open('https://news.leonetwork.org/en/news/show/' + obsid, "_blank");
+        return false;
 
         if (typeof navigator !== "undefined" && navigator.app) {
             navigator.app.loadUrl('https://news.leonetwork.org/en/news/show/' + obsid, {openExternal: true});
@@ -121,6 +122,7 @@ window.app = {
         }
  
         window.plugins.socialsharing.shareWithOptions(options);
+        return false;
     },
 
     _SHOWINGMAP : false,
