@@ -11,7 +11,7 @@
     <!-- This is a wide open CSP declaration. To lock this down for production, see below. -->
     <!--<meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline'; style-src * 'self' 'unsafe-inline'; media-src *" />-->
 
-    <meta http-equiv="Content-Security-Policy" content="default-src * gap://ready data: 'unsafe-eval' 'unsafe-inline'; img-src * data: gap://ready; frame-src *; connect-src * ; style-src * 'self' 'unsafe-inline' 'unsafe-eval'; media-src *; script-src * data: 'self' 'unsafe-inline' 'unsafe-eval' gap://ready; ">
+    <meta http-equiv="Content-Security-Policy" content="default-src * gap: data: 'unsafe-eval' 'unsafe-inline'; img-src * data: gap:; frame-src * gap:; connect-src * ; style-src * 'self' 'unsafe-inline' 'unsafe-eval'; media-src *; script-src * data: 'self' 'unsafe-inline' 'unsafe-eval' gap:; ">
 
     <!-- Good default declaration:
     * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
