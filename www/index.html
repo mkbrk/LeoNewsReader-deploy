@@ -11,6 +11,12 @@
     <!-- This is a wide open CSP declaration. To lock this down for production, see below. -->
     <!--<meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline'; style-src * 'self' 'unsafe-inline'; media-src *" />-->
 
+    <!--
+        this FINALLY works:
+        note that gap: is very important for ios
+        and 'unsafe-inline' is very important for onclick, etc.
+        MAJOR hassle
+    -->
     <meta http-equiv="Content-Security-Policy" content="default-src * gap: data: 'unsafe-eval' 'unsafe-inline'; img-src * data: gap:; frame-src * gap:; connect-src * ; style-src * 'self' 'unsafe-inline' 'unsafe-eval'; media-src *; script-src * data: 'self' 'unsafe-inline' 'unsafe-eval' gap:; ">
 
     <!-- Good default declaration:
@@ -23,6 +29,7 @@
     -->
     <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: 'unsafe-inline' https://ssl.gstatic.com; style-src 'self' 'unsafe-inline'; media-src *" /> -->
 
+    <link rel="stylesheet" type="text/css" href="css/mapbox.css" />    
     <link rel="stylesheet" type="text/css" href="css/index.css" />
     <title>LEO News Reader</title>
 </head>
@@ -44,7 +51,6 @@
                         
                     </td>
                     <td><a onclick="app.toggleMap();" id="mapButton" class="btn">Map</a></td>
-
                 </tr>
             </table>
         </div>
@@ -56,6 +62,10 @@
 
         <div id="categories" style="display:none;"></div>
 
+        <div id="map" style="display:none;">
+
+        </div>
+
         <div id="results">
 
         </div>
@@ -65,6 +75,7 @@
     <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="js/mustache.js"></script>
     <script type="text/javascript" src="js/moment.js"></script>
+    <script type="text/javascript" src="js/mapbox.js"></script>
     <script type="text/javascript" src="js/index.js"></script>
 
     <script type="text/javascript">
@@ -128,6 +139,44 @@
         </div>
 
     </script>
+
+    <script id="popup_result_template" type="x-tmpl-mustache">
+            <div observation-id="{{Document.ObservationID}}" latitude="{{Document.Location.Latitude}}" longitude="{{Document.Location.Longitude}}">
+                <table  >
+                    <tr >
+                        
+                        <td style="vertical-align:top;">
+                            {{#Document.SourceName}}
+                                <div class="nomap" style="font-size:80%;color:Gray;">
+                                    <img src="img/pixel.png" style="color:white;width:12px;height:12px;background-size:cover;background-image:url('https://news.leonetwork.org/en/news/sourceicon?source={{Document.SourceName}}');border-color:white;" />
+                                    {{Document.SourceName}}
+                                </div>
+                            {{/Document.SourceName}}
+    
+                            <div><a class="result-title" onclick="app.show('{{Document.ObservationID}}');">{{{Document.ObservationTitle}}}</a></div>
+                            <div style="font-size:80%;color:Gray;">{{Document.LocationDescription}}</div>
+                            
+    
+                            <div class="nomap" style="font-size:90%;color:Gray;margin-top:10px;">{{Document.ObservationSummary}}</div>
+                            
+                            <div style="font-size:80%;color:Gray;margin-top:10px;">
+                                    {{Document.LocalizedObservationDate}}
+                                    {{#Document.Contributors}}
+                                        / {{.}}
+                                    {{/Document.Contributors}}
+                            </div>
+    
+    
+                        </td>
+    
+                        <td style="vertical-align:top;width:100px;">
+                            <img src="https://news.leonetwork.org{{Document.ThumbnailUrl}}" class="result-thumbnail" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+    
+        </script>
 
     <script id="related-results-template" type="x-tmpl-mustache">
         

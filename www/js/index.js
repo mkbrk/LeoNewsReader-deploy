@@ -8,6 +8,7 @@ window.app = {
             //start-up code in here...
             $.support.cors = true;
 
+            //categories.json is bundled in www
             $.get("categories.json", null, function(res) {
                 app.categories = {};
                 for (var i = 0; i < res.length; i++) {
@@ -24,15 +25,10 @@ window.app = {
 
     show : function(obsid)
     {
+        //note that should be able to pass _system as the target to get this to open in system browser
         cordova.InAppBrowser.open('https://news.leonetwork.org/en/news/show/' + obsid, '_blank', 'location=yes');
         //window.open('https://news.leonetwork.org/en/news/show/' + obsid, "_blank");
         return false;
-
-        if (typeof navigator !== "undefined" && navigator.app) {
-            navigator.app.loadUrl('https://news.leonetwork.org/en/news/show/' + obsid, {openExternal: true});
-        } else {
-            window.open('https://news.leonetwork.org/en/news/show/' + obsid);
-        }
     },
 
     working : function(isworking) {
@@ -47,6 +43,8 @@ window.app = {
     },
 
     runQuery : function(query, category) {
+        $("#map").hide();
+        $("#results").show();
         app.working();
         var url = app.ROOT + "en/news/find";
         $.get(url, {query:query, category:category}, function(res) {
@@ -126,11 +124,13 @@ window.app = {
     },
 
     _SHOWINGMAP : false,
+    _MAP : null,
 
     toggleMap : function() {
         if(app._SHOWINGMAP)
         {
-            Mapbox.hide({});            
+            $("#results").show();
+            $("#map").hide();
         }
         else
         {
@@ -138,70 +138,40 @@ window.app = {
             var centerOn = null;
             if(app.currentResults != null)
             {
-                for (var i = 0; i < app.currentResults.Results.length; i++) {
+                L.mapbox.accessToken = "pk.eyJ1IjoibGVvbmV0d29yayIsImEiOiIzZTcwOTc5YjA3ZGQwZWNlNjMyMjIwOWIxNmVhMTExNSJ9.0Bj60Y4gR_bkN3AobSIeaA";
+                app._MAP = L.mapbox.map('map', "mapbox.outdoors", {minZoom:2});
 
-                    var doc = app.currentResults.Results[i].Document;
+                var lls = [];
+                var popup = $("#popup_result_template").html();
+                Mustache.parse(popup);
+
+                for (var i = 0; i < app.currentResults.Results.length; i++) 
+                {
+                    var result = app.currentResults.Results[i];
+                    var doc = result.Document;
                     if(doc.Location && doc.Location != null)
-                    {
-                        if(centerOn == null)
-                            centerOn = {lat: doc.Location.Latitude, lng: doc.Location.Longitude};
-                        
-                        markers.push(
-                            {
-                                lat: doc.Location.Latitude,
-                                lng: doc.Location.Longitude,
-                                title: doc.ObservationTitle,
-                                subtitle: doc.LocalizedObservationDate
-                            }   
-                        );
+                    {           
+                        var ll = L.latLng(doc.Location.Latitude, doc.Location.Longitude);
+                        lls.push(ll);
+
+                        var marker = L.circleMarker(ll, {
+                            radius: 12,
+                            color: 'white',
+                            weight: 4,
+                            opacity: 0.95,
+                            fillColor: 'orange',
+                            fillOpacity: 0.95
+                        }).bindPopup(Mustache.render(popup, result), {maxWidth:300});
+
+                        marker.addTo(app._MAP);
                     }
-                };
+                }
 
-                Mapbox.show({
-                    style: 'light', // light|dark|emerald|satellite|streets , default 'streets'
-                    margins: {
-                      left: 0, // default 0
-                      right: 0, // default 0
-                      top: 70, // default 0
-                      bottom: 0 // default 0
-                    },
-                    center: centerOn,
-                    zoomLevel: 8, // 0 (the entire world) to 20, default 10
-                    showUserLocation: false, // your app will ask permission to the user, default false
-                    hideAttribution: true, // default false, Mapbox requires this default if you're on a free plan
-                    hideLogo: true, // default false, Mapbox requires this default if you're on a free plan
-                    hideCompass: false, // default false
-                    disableRotation: false, // default false
-                    disableScroll: false, // default false
-                    disableZoom: false, // default false
-                    disablePitch: false, // disable the two-finger perspective gesture, default false
-                    markers: markers
-                  },
-
-                  // optional success callback
-                  function(msg) {
-                    Mapbox.addMarkerCallback(function (selectedMarker) {
-                            //see if we can find the one that was selected
-                            if(app.currentResults != null)
-                            {
-                                for (var i = 0; i < app.currentResults.Results.length; i++) {
-                                    var doc = app.currentResults.Results[i].Document;
-                                    if(doc.ObservationTitle == selectedMarker.title && doc.LocalizedObservationDate == selectedMarker.subtitle)
-                                        app.show(doc.ObservationID);
-                                };
-                            }
-                        });
-                      },
-
-                      // optional error callback
-                      function(msg) {
-                        alert("Error :( " + JSON.stringify(msg));
-                      }
-                    );
-
-
+                app._MAP.fitBounds(new L.LatLngBounds(lls), {maxZoom:5});
             }
         }
+        $("#results").hide();
+        $("#map").show();
         app._SHOWINGMAP = !app._SHOWINGMAP;
         $("#mapButton").html(app._SHOWINGMAP ? "List" : "Map");
     },
