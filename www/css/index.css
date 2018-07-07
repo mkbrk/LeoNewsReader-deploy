@@ -41,8 +41,12 @@ body {
 
 .result-block .result-table
 {
-    width:95%;
-    margin:20px;
+    width:100%;
+}
+
+.result-block .result-table td
+{
+     padding:10px;
 }
 
 #categories svg
