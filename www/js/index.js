@@ -129,8 +129,8 @@ window.app = {
     toggleMap : function() {
         if(app._SHOWINGMAP)
         {
+            $("#map").css("visibility", "hidden");
             $("#results").show();
-            $("#map").css("visibility", "hidden"); 
         }
         else
         {
@@ -140,47 +140,36 @@ window.app = {
             {
                 //mapbox GL version
                 mapboxgl.accessToken = 'pk.eyJ1IjoibGVvbmV0d29yayIsImEiOiIzZTcwOTc5YjA3ZGQwZWNlNjMyMjIwOWIxNmVhMTExNSJ9.0Bj60Y4gR_bkN3AobSIeaA';
-                var map = new mapboxgl.Map({
+                app._MAP = new mapboxgl.Map({
                     container: 'map', // container id
-                    style: 'mapbox://styles/mapbox/streets-v9', // stylesheet location
+                    style: 'mapbox://styles/mapbox/outdoors-v9', // stylesheet location
                     center: [-74.50, 40], // starting position [lng, lat]
                     zoom: 9 // starting zoom
                 });
 
-                // L.mapbox.accessToken = "pk.eyJ1IjoibGVvbmV0d29yayIsImEiOiIzZTcwOTc5YjA3ZGQwZWNlNjMyMjIwOWIxNmVhMTExNSJ9.0Bj60Y4gR_bkN3AobSIeaA";
-                // app._MAP = L.mapbox.map('map', "mapbox.outdoors", {minZoom:2});
+                var popup = $("#popup_result_template").html();
+                Mustache.parse(popup);
 
-                // var lls = [];
-                // var popup = $("#popup_result_template").html();
-                // Mustache.parse(popup);
+                var bounds = new mapboxgl.LngLatBounds();
 
-                // for (var i = 0; i < app.currentResults.Results.length; i++) 
-                // {
-                //     var result = app.currentResults.Results[i];
-                //     var doc = result.Document;
-                //     if(doc.Location && doc.Location != null)
-                //     {           
-                //         var ll = L.latLng(doc.Location.Latitude, doc.Location.Longitude);
-                //         lls.push(ll);
+                for (var i = 0; i < app.currentResults.Results.length; i++) 
+                {
+                    var result = app.currentResults.Results[i];
+                    var doc = result.Document;
+                    if(doc.Location && doc.Location != null)
+                    {           
+                        bounds.extend([doc.Location.Longitude, doc.Location.Latitude]);
+                        var p = new mapboxgl.Popup({ offset: 25 }).setHTML(Mustache.render(popup, result));
+                        var marker = new mapboxgl.Marker().setLngLat([doc.Location.Longitude, doc.Location.Latitude]).setPopup(p).addTo(app._MAP);
+                    }
+                }
 
-                //         var marker = L.circleMarker(ll, {
-                //             radius: 12,
-                //             color: 'white',
-                //             weight: 4,
-                //             opacity: 0.95,
-                //             fillColor: 'orange',
-                //             fillOpacity: 0.95
-                //         }).bindPopup(Mustache.render(popup, result), {maxWidth:300});
-
-                //         marker.addTo(app._MAP);
-                //     }
-                // }
-
-                // app._MAP.fitBounds(new L.LatLngBounds(lls), {maxZoom:5});
+                app._MAP.fitBounds(bounds);
             }
+            $("#results").hide();
+            $("#map").css("visibility", "visible"); 
         }
-        $("#results").hide();
-        $("#map").css("visibility", "visible"); 
+
         app._SHOWINGMAP = !app._SHOWINGMAP;
         $("#mapButton").html(app._SHOWINGMAP ? "List" : "Map");
     },
