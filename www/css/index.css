@@ -5,7 +5,7 @@
 
 html, body, .app, #map {
     height: 100%;
-    width: 100vw;
+    width: 100%;
 }
 
 #map {
@@ -24,7 +24,6 @@ body {
     background-color:#efefef;
     background-attachment:fixed;
     font-family:'HelveticaNeue-Light', 'HelveticaNeue', Helvetica, Arial, sans-serif;
-    xfont-size:12px;
     padding: 0;
     margin: 0;
 }
@@ -32,7 +31,6 @@ body {
 .result-block
 {
     background-color: white;
-    xborder-radius: 6px;
     box-shadow:2px 2px 6px #ddd;
     margin-bottom:10px;
     padding-top: 10px;

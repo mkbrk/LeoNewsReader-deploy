@@ -16,8 +16,9 @@
         note that gap: is very important for ios
         and 'unsafe-inline' is very important for onclick, etc.
         MAJOR hassle
+
     -->
-    <meta http-equiv="Content-Security-Policy" content="default-src * gap: data: 'unsafe-eval' 'unsafe-inline'; img-src * data: gap:; frame-src * gap:; connect-src * ; style-src * 'self' 'unsafe-inline' 'unsafe-eval'; media-src *; script-src * data: 'self' 'unsafe-inline' 'unsafe-eval' gap:; ">
+    <meta http-equiv="Content-Security-Policy" content="default-src * gap: data: 'unsafe-eval' 'unsafe-inline' blob:; img-src * data: gap: blob:; frame-src * gap: blob:; connect-src * ;style-src * 'self' 'unsafe-inline' 'unsafe-eval'; media-src *; script-src * data: 'self' 'unsafe-inline' 'unsafe-eval' gap: blob:; ">
 
     <!-- Good default declaration:
     * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
@@ -29,54 +30,52 @@
     -->
     <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: 'unsafe-inline' https://ssl.gstatic.com; style-src 'self' 'unsafe-inline'; media-src *" /> -->
 
-    <link rel="stylesheet" type="text/css" href="css/mapbox.css" />    
+    <link rel="stylesheet" type="text/css" href="css/mapbox-gl.css" />    
     <link rel="stylesheet" type="text/css" href="css/index.css" />
     <title>LEO News Reader</title>
 </head>
 
 <body>
-    <div class="app">
-        <div style="height:70px;">
-            <table>
-                <tr>
-                    <td valign="middle" style="text-align:center;font-size:20px;">
-                        <div>
-                            <a onclick="app.runQuery();" style="display:flex;align-items:center;white-space:nowrap;text-decoration:none;color:black;">
-                                <img src="img/logo.png" style="max-width:50px;"/> News
-                            </a>
-                        <div>
-                    </td>
-                    <td>
-                        <input style="font-size:20px;padding:4px;max-width:200px;" type="search" onsearch="app.runQuery(this.value);" placeholder="search" />
-                        
-                    </td>
+    <div style="height:70px;">
+        <table>
+            <tr>
+                <td valign="middle" style="text-align:center;font-size:20px;">
+                    <div>
+                        <a onclick="app.runQuery();" style="display:flex;align-items:center;white-space:nowrap;text-decoration:none;color:black;">
+                            <img src="img/logo.png" style="max-width:50px;"/> News
+                        </a>
+                    <div>
+                </td>
+                <td>
+                    <input style="font-size:20px;padding:4px;max-width:200px;" type="search" onsearch="app.runQuery(this.value);" placeholder="search" />
+                    
+                </td>
 
-                    <td style="display:none;"><a onclick="app.toggleMap();" id="mapButton" class="btn">Map</a></td>
-                </tr>
-            </table>
-        </div>
+                <td><a onclick="app.toggleMap();" id="mapButton" class="btn">Map</a></td>
+            </tr>
+        </table>
+    </div>
 
-        <div id="working" style="display:none;">
-            <img src="img/ajax-loader.gif"/>
-        </div>
+    <div id="working" style="display:none;">
+        <img src="img/ajax-loader.gif"/>
+    </div>
 
 
-        <div id="categories" style="display:none;"></div>
+    <div id="categories" style="display:none;"></div>
 
-        <div id="map" style="display:none;">
-
-        </div>
-
-        <div id="results">
-
-        </div>
+    <div id="map" style="visibility:hidden;">
 
     </div>
+
+    <div id="results">
+
+    </div>
+
     <script type="text/javascript" src="cordova.js"></script>
     <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="js/mustache.js"></script>
     <script type="text/javascript" src="js/moment.js"></script>
-    <script type="text/javascript" src="js/mapbox.js"></script>
+    <script type="text/javascript" src="js/mapbox-gl.js"></script>
     <script type="text/javascript" src="js/index.js"></script>
 
     <script type="text/javascript">

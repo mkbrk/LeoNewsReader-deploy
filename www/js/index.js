@@ -43,7 +43,7 @@ window.app = {
     },
 
     runQuery : function(query, category) {
-        $("#map").hide();
+        $("#map").css("visibility", "hidden");
         $("#results").show();
         app.working();
         var url = app.ROOT + "en/news/find";
@@ -130,7 +130,7 @@ window.app = {
         if(app._SHOWINGMAP)
         {
             $("#results").show();
-            $("#map").hide();
+            $("#map").css("visibility", "hidden"); 
         }
         else
         {
@@ -138,40 +138,49 @@ window.app = {
             var centerOn = null;
             if(app.currentResults != null)
             {
-                L.mapbox.accessToken = "pk.eyJ1IjoibGVvbmV0d29yayIsImEiOiIzZTcwOTc5YjA3ZGQwZWNlNjMyMjIwOWIxNmVhMTExNSJ9.0Bj60Y4gR_bkN3AobSIeaA";
-                app._MAP = L.mapbox.map('map', "mapbox.outdoors", {minZoom:2});
+                //mapbox GL version
+                mapboxgl.accessToken = 'pk.eyJ1IjoibGVvbmV0d29yayIsImEiOiIzZTcwOTc5YjA3ZGQwZWNlNjMyMjIwOWIxNmVhMTExNSJ9.0Bj60Y4gR_bkN3AobSIeaA';
+                var map = new mapboxgl.Map({
+                    container: 'map', // container id
+                    style: 'mapbox://styles/mapbox/streets-v9', // stylesheet location
+                    center: [-74.50, 40], // starting position [lng, lat]
+                    zoom: 9 // starting zoom
+                });
 
-                var lls = [];
-                var popup = $("#popup_result_template").html();
-                Mustache.parse(popup);
+                // L.mapbox.accessToken = "pk.eyJ1IjoibGVvbmV0d29yayIsImEiOiIzZTcwOTc5YjA3ZGQwZWNlNjMyMjIwOWIxNmVhMTExNSJ9.0Bj60Y4gR_bkN3AobSIeaA";
+                // app._MAP = L.mapbox.map('map', "mapbox.outdoors", {minZoom:2});
 
-                for (var i = 0; i < app.currentResults.Results.length; i++) 
-                {
-                    var result = app.currentResults.Results[i];
-                    var doc = result.Document;
-                    if(doc.Location && doc.Location != null)
-                    {           
-                        var ll = L.latLng(doc.Location.Latitude, doc.Location.Longitude);
-                        lls.push(ll);
+                // var lls = [];
+                // var popup = $("#popup_result_template").html();
+                // Mustache.parse(popup);
 
-                        var marker = L.circleMarker(ll, {
-                            radius: 12,
-                            color: 'white',
-                            weight: 4,
-                            opacity: 0.95,
-                            fillColor: 'orange',
-                            fillOpacity: 0.95
-                        }).bindPopup(Mustache.render(popup, result), {maxWidth:300});
+                // for (var i = 0; i < app.currentResults.Results.length; i++) 
+                // {
+                //     var result = app.currentResults.Results[i];
+                //     var doc = result.Document;
+                //     if(doc.Location && doc.Location != null)
+                //     {           
+                //         var ll = L.latLng(doc.Location.Latitude, doc.Location.Longitude);
+                //         lls.push(ll);
 
-                        marker.addTo(app._MAP);
-                    }
-                }
+                //         var marker = L.circleMarker(ll, {
+                //             radius: 12,
+                //             color: 'white',
+                //             weight: 4,
+                //             opacity: 0.95,
+                //             fillColor: 'orange',
+                //             fillOpacity: 0.95
+                //         }).bindPopup(Mustache.render(popup, result), {maxWidth:300});
 
-                app._MAP.fitBounds(new L.LatLngBounds(lls), {maxZoom:5});
+                //         marker.addTo(app._MAP);
+                //     }
+                // }
+
+                // app._MAP.fitBounds(new L.LatLngBounds(lls), {maxZoom:5});
             }
         }
         $("#results").hide();
-        $("#map").show();
+        $("#map").css("visibility", "visible"); 
         app._SHOWINGMAP = !app._SHOWINGMAP;
         $("#mapButton").html(app._SHOWINGMAP ? "List" : "Map");
     },
