@@ -42,6 +42,7 @@ window.app = {
         }
     },
 
+
     runQuery : function(query, category) {
         $("#map").css("visibility", "hidden");
         $("#results").show();
@@ -50,13 +51,18 @@ window.app = {
         $.get(url, {query:query, category:category}, function(res) {
             app.currentResults = res;
 
+            
             //some preprocessing
             for (var i = 0; i < res.Facets.Categories.length; i++) {
                 var c = res.Facets.Categories[i];
                 var catID = c.Value.split('|')[0];
-                res.Facets.Categories[i].CategoryID = app.categories[catID].CategoryID;
-                res.Facets.Categories[i].CategoryName = app.categories[catID].CategoryName;
-                res.Facets.Categories[i].IconSvg = app.categories[catID].IconSvg;
+                var catDef = app.categories[catID];
+                if(catDef)
+                {
+                    res.Facets.Categories[i].CategoryID = catDef.CategoryID;
+                    res.Facets.Categories[i].CategoryName = catDef.CategoryName;
+                    res.Facets.Categories[i].IconSvg = catDef.IconSvg;
+                }
             };
 
             $("#results").html(app.applyTemplate("result_template", res.Results));
